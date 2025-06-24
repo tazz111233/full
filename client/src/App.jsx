@@ -8,14 +8,14 @@ function App() {
   const [message, setMessage] = useState("");
 
   const fetchFeedback = async () => {
-    const res = await fetch("http://localhost:4000/feedback");
+    const res = await fetch("https://full-0jze.onrender.com/feedback");
     const data = await res.json();
     setFeedbacks(data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:4000/feedback", {
+    await fetch("https://full-0jze.onrender.com/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, message }),
