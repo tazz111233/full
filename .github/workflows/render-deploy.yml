@@ -1,0 +1,55 @@
+name: Fullstack Render CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  backend:
+    name: Build & Deploy Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install backend deps
+        run: npm install
+
+      - name: Run backend tests
+        run: echo "no tests defined" # Or use npm test
+
+      - name: Trigger Backend Deploy on Render
+        run: curl -X POST ${{ secrets.RENDER_HOOK_BACKEND }}
+
+  frontend:
+    name: Build & Deploy Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend deps
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Trigger Frontend Deploy on Render
+        run: curl -X POST ${{ secrets.RENDER_HOOK_FRONTEND }}
